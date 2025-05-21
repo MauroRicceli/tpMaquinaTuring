@@ -11,7 +11,7 @@ from generador_multicinta import generador_multicintas as generator
 class maquina_turing_ej1:
 
     def crear_multicinta(self):
-        aux = generator(2,3,"01","+")
+        aux = generator(2,2,"01","+","=")
         aux.comenzar_generacion()
         return aux.multicinta
     

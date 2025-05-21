@@ -5,26 +5,29 @@ import re
 #OBJETO RECIBE CANTIDAD DE STRINGS QUE QUERES MANEJAR, CUANTAS CINTAS TENDRÁ LA MT (DE 1 A +INF), EL ALFABETO COMO STRING "01" SIN CONTAR LOS SEPARADORES,
 #Y UN SEPARADOR OPCIONAL (NONE, '+', '-', ETC)
 class generador_multicintas:
-    def __init__(self, cant_strings, cant_cintas, alfabeto, separador_strings):
+    def __init__(self, cant_strings, cant_cintas, alfabeto, separador_strings, caracter_final):
         self.cant_strings = cant_strings
         self.cant_cintas = cant_cintas
         self.alfabeto = alfabeto.upper()
         self.multicinta = None
         self.string_analizar = None
         self.separador_strings = separador_strings
+        self.caracter_final = caracter_final
 
     #UNE TODOS LOS STRINGS DE LOS INPUTS TENIENDO EN CUENTA EL POSIBLE SEPARADOR
-    def generar_string_unico(self, array_inputs):
+    def __generar_string_unico(self, array_inputs):
         string_unico = ""+array_inputs[0]
         array_inputs.pop(0)
         for i in range(len(array_inputs)):
             if(self.separador_strings != None):
                 string_unico += self.separador_strings
             string_unico += array_inputs[i]
-        
+        if(self.caracter_final != None):
+            string_unico += self.caracter_final
+            
         self.string_analizar = string_unico
 
-        return self.generar_multicinta()
+        return self.__generar_multicinta()
                 
     #MANEJA LOS INPUTS DE TODOS LOS STRINGS Y VERIFICA QUE ESTEN DENTRO DEL ALFABETO
     def comenzar_generacion(self):
@@ -38,10 +41,10 @@ class generador_multicintas:
                 i += 1
             else:
                 print("Ingrese un string válido dentro del alfabeto ("+self.alfabeto+")")
-        return self.generar_string_unico(inputs)    
+        return self.__generar_string_unico(inputs)    
     
     #GENERA LAS CINTAS POSIBLES DEJANDO TDO EN BLANCOS Y LUEGO UBICA EL STRING CON UNA COLUMNA DE BLANCOS A CADA LADO PARA MARCAR INICIO Y FIN
-    def generar_multicinta(self):
+    def __generar_multicinta(self):
         self.multicinta = numpy.full((self.cant_cintas, len(self.string_analizar)+2), 'B')
 
         for i in range(len(self.string_analizar)):
