@@ -1,7 +1,7 @@
 import numpy
 import re
 
-#OBJETO RECIBE CANTIDAD DE STRINGS QUE QUERES MANEJAR, CUANTAS CINTAS TENDRÁ LA MT (DE 1 A +INF), EL ALFABETO COMO STRING "01" SIN CONTAR LOS BLANCOS,
+#OBJETO RECIBE CANTIDAD DE STRINGS QUE QUERES MANEJAR, CUANTAS CINTAS TENDRÁ LA MT (DE 1 A +INF), EL ALFABETO COMO STRING "01" SIN CONTAR LOS SEPARADORES,
 #Y UN SEPARADOR OPCIONAL (NONE, '+', '-', ETC)
 class generador_multicintas:
     def __init__(self, cant_strings, cant_cintas, alfabeto, separador_strings):
@@ -48,6 +48,9 @@ class generador_multicintas:
     
         return
 
+
+    def __str__(self):
+        return f"Multicinta:\n{self.multicinta}"
 #EJ
 #prueba = generador_multicintas(4, 3, "ABC1", "+")
 #prueba.comenzar_generacion()
