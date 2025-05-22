@@ -3,7 +3,7 @@ import pandas
 import re
 
 #OBJETO RECIBE CANTIDAD DE STRINGS QUE QUERES MANEJAR, CUANTAS CINTAS TENDRÁ LA MT (DE 1 A +INF), EL ALFABETO COMO STRING "01" SIN CONTAR LOS SEPARADORES,
-#Y UN SEPARADOR OPCIONAL (NONE, '+', '-', ETC)
+#Y UN SEPARADOR OPCIONAL (NONE, '+', '-', ETC), ADEMAS PODES PONER UN CARACTER FINAL A LO ULTIMO DEL STRING, POR EJEMPLO UN =
 class generador_multicintas:
     def __init__(self, cant_strings, cant_cintas, alfabeto, separador_strings, caracter_final):
         self.cant_strings = cant_strings
@@ -24,7 +24,7 @@ class generador_multicintas:
             string_unico += array_inputs[i]
         if(self.caracter_final != None):
             string_unico += self.caracter_final
-            
+
         self.string_analizar = string_unico
 
         return self.__generar_multicinta()
