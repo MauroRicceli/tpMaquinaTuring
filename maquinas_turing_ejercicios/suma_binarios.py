@@ -27,7 +27,7 @@ from generador_multicinta import generador_multicintas as generator
 class maquina_turing_ej1:
 
     def __crear_multicinta(self):
-        aux = generator(2,2,"01","+","=0")
+        aux = generator(2,2,"01","+","=11")
         aux.comenzar_generacion()
         return aux.multicinta
     
@@ -226,6 +226,8 @@ class maquina_turing_ej1:
         self.estado_actual = 'q5'
 
         print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
         print("")
         print("")
 
@@ -250,13 +252,15 @@ class maquina_turing_ej1:
         self.estado_actual = 'q6'
 
         print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
         print("")
         print("")
 
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[1][self.columna] = 'Z'
+            self.multicinta[0][self.columna] = '1'
             self.columna = self.columna - 1
-            self.__estado_q7()
+            self.__estado_reset()
             return
         
         if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
@@ -269,6 +273,8 @@ class maquina_turing_ej1:
         self.estado_actual = 'q7'
 
         print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
         print("")
         print("")
 
@@ -294,6 +300,8 @@ class maquina_turing_ej1:
         self.estado_actual = 'q9'
 
         print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
         print("")
         print("")
 
@@ -312,6 +320,8 @@ class maquina_turing_ej1:
         self.estado_actual = 'q10'
 
         print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
         print("")
         print("")
         
@@ -324,6 +334,8 @@ class maquina_turing_ej1:
         self.estado_actual = 'q11'
         
         print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
         print("")
         print("")
 
@@ -347,7 +359,7 @@ class maquina_turing_ej1:
         
         if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Z'):
             self.multicinta[1][self.columna] = 'B'
-            self.cache_actual = '1'
+            self.cache_actual = '0'
             self.columna = self.columna + 1
             self.__estado_qB()
             return
@@ -361,16 +373,21 @@ class maquina_turing_ej1:
     def __estado_q12(self):
         self.estado_actual = 'q12'
 
+        print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
+        print("")
+        print("")
+
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'Z'):
             self.cache_actual = '0'
             self.multicinta[0][self.columna] = '1'
-            self.multicinta[1][self.columna] = 'B'
             self.columna = self.columna + 1
             self.__estado_q11()
             return
         
         if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Z'):
-            self.multicinta[1][self.columna] = 'B'
+            self.multicinta[1][self.columna] = 'R'
             self.cache_actual = '1'
             self.columna = self.columna + 1
             self.__estado_qB()
@@ -378,6 +395,7 @@ class maquina_turing_ej1:
         
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
             self.multicinta[0][self.columna] = '1'
+            self.multicinta[1][self.columna] = 'R'
             self.columna = self.columna + 1
             self.__estado_q11()
             return
@@ -387,6 +405,8 @@ class maquina_turing_ej1:
         self.estado_actual = 'q13'
 
         print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
         print("")
         print("")
 
@@ -432,6 +452,21 @@ class maquina_turing_ej1:
 
             self.multicinta = numpy.hstack((self.multicinta, nueva_columna))
 
+            self.__estado_prueba()
+            return
+
+    def __estado_prueba(self):
+        self.estado_actual = 'prueba'
+
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
+            self.multicinta[0][self.columna] = '0'
+            self.columna = self.columna - 1
+            self.__estado_prueba()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'R'):
+            self.multicinta[1][self.columna] = 'B'
+            self.columna = self.columna - 1
             self.__estado_reset()
             return
 
