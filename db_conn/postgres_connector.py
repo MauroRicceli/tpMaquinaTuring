@@ -11,6 +11,7 @@ class db:
         cursor = conn.cursor()
         cursor.execute("DROP TABLE programa")
         cursor.execute("DROP TABLE traza_ejecucion")
+        cursor.execute("DROP TABLE alfabeto")
         cursor.execute("CREATE TABLE IF NOT EXISTS programa(estado_ori VARCHAR(20), caracter_ori VARCHAR(20), estado_nue VARCHAR(20), caracter_nue VARCHAR(20), desplazamiento CHAR(1))")
         cursor.execute("CREATE TABLE IF NOT EXISTS traza_ejecucion(estado_ori VARCHAR(20), caracter_ori VARCHAR(20), estado_nue VARCHAR(20), caracter_nue VARCHAR(20), desplazamiento CHAR(1), columna_actual VARCHAR(400),estado_string VARCHAR(1000))")
         cursor.execute("CREATE TABLE IF NOT EXISTS alfabeto(alf VARCHAR(200))")
