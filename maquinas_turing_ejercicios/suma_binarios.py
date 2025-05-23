@@ -7,42 +7,33 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from generador_multicinta import generador_multicintas as generator
 
-#REALIZAR SUMAS DE 2 NUMEROS BINARIOS
-
-#Q0 ESTADO INICIAL, BUSCA UN NUMERO SIN MARCAR DE LA PRIMERA PARTE DE LA SUMA DE IZQ A DER Y LO GUARDA EN CACHE
-#Q1 UNA VEZ QUE ENCUENTRA UN NUMERO SIN MARCAR Y SE MUEVE A LA DERECHA HASTA ENCONTRAR EL = PARA BUSCAR EL 2DO NUMERO
-#Q2 BUSCA UN NUMERO SIN MARCAR DE LA SEGUNDA PARTE DE LA SUMA Y SEGUN CUAL ES LLAMA A QR1 O QR0
-#Q3 SI EL NUMERO DE LA SEGUNDA PARTE marcada ES 0, SE LLAMA A ESTE ESTADO Y SE DIRIGE HASTA EL FINAL DEL RESULTADO
-#Q4 IGUAL QUE Q3 PERO LA SEGUNDA PARTE ES 1
-#Q5 ES CUANDO PASO EL = Y EMPIEZO A BUSCAR EL RESULTADO PARA SUMAR UN 1 EN ALGUN ESPACIO, SI NO SE ENCUENTRA SE LLEGA AL = Y SE LLAMA A Q10, SI LO ENCUENTRA PONE EL PRIMER 0 QUE ENCUENTRE EN 1 
-#Q10 BUSCA EL PRIMER 1 DEL RESULTADO, Y LLAMA A QA
-#QA PONE TOD EL RESULTADO EN 0 MENOS EL PRIMER 1 PARA VER QUE AGREGAMOS UN NUMERO MAS CON EL ACARREO, EXPANDE LOS BLANCOS.
-#QR1 SE ENCARGA DE MANEJAR BUSCAR EL = SABIENDO QUE EL MARCADO DE LA SEGUNDA PARTE ES 1
-#QR0 IGUAL QUE QR1 PERO CON 0
-
-#CAMBIAR PARA CALCULAR DE DERECHA A IZQUIERDA.
-#Q0 DEBE EMPEZAR A LA IZQUIERDA DEL +
-#Q2 DEBE EMPEZAR A LA IZQUIERDA DEL =
+#REALIZAR SUMA DE UN NUMERO BINARIO Y X CANTIDAD DE 1'S BINARIOS
 
 class maquina_turing_ej1:
 
     def __crear_multicinta(self):
-        aux = generator(2,2,"01","+","=11")
+        aux = generator(2,2,"01","+","=", "suma")
         aux.comenzar_generacion()
         return aux.multicinta
     
     def __init__(self):
         self.multicinta = self.__crear_multicinta()
         self.estados = []
-        self.alfabeto = "01+"
+        self.alfabeto = "01+="
         self.cache_actual = 'B'
         self.columna = 0
         self.estado_actual = 'q0'
     
-
+    #Q0 SE MUEVE A LA DERECHA HASTA LLEGAR AL IGUAL
     def __estado_q0(self):
         self.estado_actual = 'q0'
 
+        print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
+        print("")
+        print("XDD")
+
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna + 1
             self.__estado_q0()
@@ -61,98 +52,37 @@ class maquina_turing_ej1:
         if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'X'):
             self.columna = self.columna + 1
             self.__estado_q0()
-            return
-        
-        if(self.multicinta[0][self.columna] == '+' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna - 1
-            self.__estado_q16()
-            return
-        
-        
-
-    def __estado_q16(self):
-        self.estado_actual = 'q16'
-
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[1][self.columna] = 'X'
-            self.columna = self.columna + 1
-            self.cache_actual = '0'
-            self.__estado_q1()
-            return
-        
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[1][self.columna] = 'X'
-            self.columna = self.columna + 1
-            self.cache_actual = '1'
-            self.__estado_q1()
-            return
-        
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'X'):
-            self.columna = self.columna - 1
-            self.__estado_q16()
-            return
-        
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'X'):
-            self.columna = self.columna - 1
-            self.__estado_q16()
-            return
-        
-        if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna - 1
-            #self.__estado_qALGO() definir luego, si llega a BB el primer numero ya esta completamente marcado.
-            return
-        
-    def __estado_q1(self):
-        self.estado_actual = 'q1'
-
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna + 1
-            self.__estado_q1()
-            return
-        
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna + 1
-            self.__estado_q1()
-            return
-        
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'X'):
-            self.columna = self.columna + 1
-            self.__estado_q1()
-            return
-
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'X'):
-            self.columna = self.columna + 1
-            self.__estado_q1()
             return
         
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'Y'):
             self.columna = self.columna + 1
-            self.__estado_q1()
-            return
-
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Y'):
-            self.columna = self.columna + 1
-            self.__estado_q1()
-            return
-
-        if(self.multicinta[0][self.columna] == '+' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna + 1
-            self.__estado_q1()
+            self.__estado_q0()
             return
         
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Y'):
+            self.columna = self.columna + 1
+            self.__estado_q0()
+            return
+        
+        if(self.multicinta[0][self.columna] == '+' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_q0()
+            return
+
         if(self.multicinta[0][self.columna] == '=' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna - 1
             self.__estado_q2()
             return
-    
+        
+    #BUSCA Y VA MARCANDO LOS 1'S, CUANDO MARCA UNO VA A QR1
     def __estado_q2(self):
         self.estado_actual = 'q2'
 
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[1][self.columna] = 'Y'
-            self.columna = self.columna + 1
-            self.__estado_qr0()
-            return
+        print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
+        print("")
+        print("")
         
         if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
             self.multicinta[1][self.columna] = 'Y'
@@ -160,11 +90,6 @@ class maquina_turing_ej1:
             self.__estado_qr1()
             return
         
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'Y'):
-            self.columna = self.columna - 1
-            self.__estado_q2()
-            return
-        
         if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Y'):
             self.columna = self.columna - 1
             self.__estado_q2()
@@ -172,39 +97,41 @@ class maquina_turing_ej1:
         
         if(self.multicinta[0][self.columna] == '+' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna + 1
-            #self.__estado_qr() SI LLEGA AL +B YA SE ACABO EL NUMERO 2, manejar
+            print("Estado Final")
             return
 
-    def __estado_q3(self):
-        self.estado_actual = 'q3'
+    #MARCA EL PRIMER DIGITO DEL RESULTADO PARA NO PISARLO
+    def __estado_qS(self):
+        self.estado_actual = 'qS'
 
-        if(self.cache_actual == '0'): #si tomaste 0 de ambos numeros la suma es 0, no hacer nada y volver.
-            self.columna = self.columna - 1
-            self.__estado_reset()
-            return
-        
+        print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
+        print("")
+        print("")
+
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
+            self.multicinta[1][self.columna] = 'R'
             self.columna = self.columna + 1
-            self.__estado_q3()
+            self.__estado_q4()
             return
         
         if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
+            self.multicinta[1][self.columna] = 'R'
             self.columna = self.columna + 1
-            self.__estado_q3()
-            return
-        
-        if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna - 1
-            self.__estado_q5()
+            self.__estado_q4()
             return
 
 
+    #VUELVE A BUSCAR EL FIN DEL STRING Y VA A Q7
     def __estado_q4(self):
         self.estado_actual = 'q4'
 
-        if(self.cache_actual == '0'): #ES LO MISMO QUE MANEJA Q3, SOLO QUE EN VEZ DE TENER 0 EN CACHE Y TOMAR 1, TIENE 1 EN CACHE Y TOMA 0
-            self.__estado_q3()
-            return
+        print(self.multicinta)
+        print(self.estado_actual)
+        print(self.columna)
+        print("")
+        print("")
         
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna + 1
@@ -219,11 +146,13 @@ class maquina_turing_ej1:
         
         if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna - 1
-            self.__estado_q6()
+            self.__estado_q7()
             return
 
-    def __estado_q5(self):
-        self.estado_actual = 'q5'
+
+    #VERIFICA QUE EL PRIMER DIGITO DEL RESULTADO NO SEA TAMBIEN EL ULTIMO, SI LO ES LO MARCA NUEVAMENTE CON F PARA DISTINGUIRLO, SI NO, NO HACE NADA. LUEGO SE VA A Q6
+    def __estado_q7(self):
+        self.estado_actual = 'q7'
 
         print(self.multicinta)
         print(self.estado_actual)
@@ -231,23 +160,31 @@ class maquina_turing_ej1:
         print("")
         print("")
 
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[0][self.columna] = '1'
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'R'):
+            self.multicinta[1][self.columna] = 'F'
             self.columna = self.columna + 1
-            self.__estado_q9()
+            self.__estado_q6()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'R'):
+            self.multicinta[1][self.columna] = 'F'
+            self.columna = self.columna + 1
+            self.__estado_q6()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_q6()
             return
         
         if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna - 1
-            self.__estado_q5()
-            return
-        
-        if(self.multicinta[0][self.columna] == '=' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna + 1
-            self.__estado_q10()
+            self.__estado_q6()
             return
-    
 
+
+    #SE ENCARGA DE REALIZAR LA SUMA, BUSCAR DONDE PONER EL 1, SI NO HAY LUGAR SE MUEVE Y PONE ESE 1 EN 0 Y ASI... SI NO ENCUENTRA NINGUN ESPACIO Y LLEGA AL MARCADO,
+    #LLAMA AL ESTADO ENCARGADO DE MANEJAR EL OVERFLOW, SI LO ENCUENTRA, PASA AL SIGUIENTE 1 DE LA SUMA
     def __estado_q6(self):
         self.estado_actual = 'q6'
 
@@ -263,241 +200,77 @@ class maquina_turing_ej1:
             self.__estado_reset()
             return
         
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[1][self.columna] = 'Z'
-            self.columna = self.columna - 1
-            self.__estado_q7()
-            return
-    
-    def __estado_q7(self):
-        self.estado_actual = 'q7'
-
-        print(self.multicinta)
-        print(self.estado_actual)
-        print(self.columna)
-        print("")
-        print("")
-
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'F'):
             self.multicinta[0][self.columna] = '1'
-            self.columna = self.columna + 1
-            
+            self.columna = self.columna - 1
             self.__estado_reset()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'F'):
+            self.columna = self.columna - 1
+            self.__estado_overflow()
             return
         
         if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
             self.multicinta[0][self.columna] = '0'
             self.columna = self.columna - 1
-            self.__estado_q7()
+            self.__estado_q6()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'R'):
+            self.columna = self.columna - 1
+            self.__estado_overflow()
+            return
+        
+        if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna - 1
+            self.__estado_q6()
+            return
+
+    #SE ENCARGA DE MANEJAR EL OVERFLOW, Y LUEGO RESETEA
+    def __estado_overflow(self):
+        self.estado_actual = 'overflow'
+
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
+            self.multicinta[0][self.columna] = '0'
+            self.columna = self.columna + 1
+            self.__estado_overflow()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_overflow()
             return
         
         if(self.multicinta[0][self.columna] == '=' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna + 1
-            self.__estado_q12()
+            self.__estado_overflow()
             return
 
-    def __estado_q9(self):
-        self.estado_actual = 'q9'
-
-        print(self.multicinta)
-        print(self.estado_actual)
-        print(self.columna)
-        print("")
-        print("")
-
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[0][self.columna] = '0'
-            self.columna = self.columna + 1
-            self.__estado_q9()
-            return
-
-        if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna - 1
-            self.__estado_reset()
-            return
-
-    def __estado_q10(self):
-        self.estado_actual = 'q10'
-
-        print(self.multicinta)
-        print(self.estado_actual)
-        print(self.columna)
-        print("")
-        print("")
-        
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna + 1
-            self.__estado_qA()
-            return
-
-    def __estado_q11(self):
-        self.estado_actual = 'q11'
-        
-        print(self.multicinta)
-        print(self.estado_actual)
-        print(self.columna)
-        print("")
-        print("")
-
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna + 1
-            self.__estado_q11()
-            return
-        
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna + 1
-            self.__estado_q11()
-            return
-        
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'Z'):
-            self.multicinta[0][self.columna] = '1'
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'F'):
             self.multicinta[1][self.columna] = 'B'
             self.columna = self.columna + 1
-            self.cache_actual = '0'
-            self.__estado_qB()
-            return
-        
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Z'):
-            self.multicinta[1][self.columna] = 'B'
-            self.cache_actual = '0'
-            self.columna = self.columna + 1
-            self.__estado_qB()
-            return
-        
-        if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[0][self.columna] = '0'
-            self.columna = self.columna - 1
-            self.__estado_q13()
-            return
-
-    def __estado_q12(self):
-        self.estado_actual = 'q12'
-
-        print(self.multicinta)
-        print(self.estado_actual)
-        print(self.columna)
-        print("")
-        print("")
-
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'Z'):
-            self.cache_actual = '0'
-            self.multicinta[0][self.columna] = '1'
-            self.columna = self.columna + 1
-            self.__estado_q11()
-            return
-        
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Z'):
-            self.multicinta[1][self.columna] = 'R'
-            self.cache_actual = '1'
-            self.columna = self.columna + 1
-            self.__estado_qB()
-            return
-        
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[0][self.columna] = '1'
-            self.multicinta[1][self.columna] = 'R'
-            self.columna = self.columna + 1
-            self.__estado_q11()
-            return
-
-
-    def __estado_q13(self):
-        self.estado_actual = 'q13'
-
-        print(self.multicinta)
-        print(self.estado_actual)
-        print(self.columna)
-        print("")
-        print("")
-
-        self.columna = self.columna - 1
-
-        nueva_columna = numpy.array([['B'],['B']])
-
-        self.multicinta = numpy.hstack((self.multicinta, nueva_columna))
-
-        self.__estado_reset()
-        return
-
-
-
-    def __estado_qA(self):
-        self.estado_actual = 'qA'
-
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[0][self.columna] = '0'
-            self.columna = self.columna + 1
-            self.__estado_qA()
-            return
-        
-        if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[0][self.columna] = '0'
-            self.columna = self.columna - 1
-
-            nueva_columna = numpy.array([['B'],['B']])
-
-            self.multicinta = numpy.hstack((self.multicinta, nueva_columna))
-
-            self.__estado_reset()
-            return
-        
-    def __estado_qB(self):
-        self.estado_actual = 'qB'
-
-        if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[0][self.columna] = self.cache_actual
-            self.columna = self.columna - 1
-
-            nueva_columna = numpy.array([['B'],['B']])
-
-            self.multicinta = numpy.hstack((self.multicinta, nueva_columna))
-
-            self.__estado_prueba()
-            return
-
-    def __estado_prueba(self):
-        self.estado_actual = 'prueba'
-
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
-            self.multicinta[0][self.columna] = '0'
-            self.columna = self.columna - 1
-            self.__estado_prueba()
+            self.__estado_overflow()
             return
         
         if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'R'):
             self.multicinta[1][self.columna] = 'B'
+            self.columna = self.columna + 1
+            self.__estado_overflow()
+            return
+
+        if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
+            self.multicinta[0][self.columna] = '0'
             self.columna = self.columna - 1
+
+            nueva_columna = numpy.array([['B'],['B']])
+
+            self.multicinta = numpy.hstack((self.multicinta, nueva_columna))
+
             self.__estado_reset()
             return
-
-    def __estado_qr0(self):
-        self.estado_actual = 'qr0'
-
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna + 1
-            self.__estado_qr0()
-            return
-        
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna + 1
-            self.__estado_qr0()
-            return
-        
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'Y'):
-            self.columna = self.columna + 1
-            self.__estado_qr0()
-            return
-
-        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Y'):
-            self.columna = self.columna + 1
-            self.__estado_qr0()
-            return
-        
-        if(self.multicinta[0][self.columna] == '=' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna + 1
-            self.__estado_q3()
-            return
     
+    #VA HACIA EL PRINCIPIO DEL RESULTADO (=), PARA COMENZAR A REALIZAR LA SUMA, LUEGO LLAMA A qS
     def __estado_qr1(self):
         self.estado_actual = 'qr1'
 
@@ -523,7 +296,7 @@ class maquina_turing_ej1:
         
         if(self.multicinta[0][self.columna] == '=' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna + 1
-            self.__estado_q4()
+            self.__estado_qS()
             return
     
 
@@ -579,6 +352,12 @@ class maquina_turing_ej1:
         if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna + 1
             self.__estado_q0()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'R'):
+            self.multicinta[1][self.columna] = 'B'
+            self.columna = self.columna - 1
+            self.__estado_reset()
             return
 
 

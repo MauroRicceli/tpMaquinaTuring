@@ -4,8 +4,11 @@ import re
 
 #OBJETO RECIBE CANTIDAD DE STRINGS QUE QUERES MANEJAR, CUANTAS CINTAS TENDRÁ LA MT (DE 1 A +INF), EL ALFABETO COMO STRING "01" SIN CONTAR LOS SEPARADORES,
 #Y UN SEPARADOR OPCIONAL (NONE, '+', '-', ETC), ADEMAS PODES PONER UN CARACTER FINAL A LO ULTIMO DEL STRING, POR EJEMPLO UN =
+
+#EJERCICIO ES PARA HABILITAR CAMBIOS QUE SIRVAN PARA TU EJERCICIO EN PARTICULAR, ASI ES FUNCIONAL CON ESTE UNICO CODIGO, LE CLAVAS ALGO ADENTRO Y LA MODIFICAS CON UN IF, COSA QUE
+#A MI NO ME MODIFIQUE NADA.
 class generador_multicintas:
-    def __init__(self, cant_strings, cant_cintas, alfabeto, separador_strings, caracter_final):
+    def __init__(self, cant_strings, cant_cintas, alfabeto, separador_strings, caracter_final, ejercicio):
         self.cant_strings = cant_strings
         self.cant_cintas = cant_cintas
         self.alfabeto = alfabeto.upper()
@@ -13,10 +16,13 @@ class generador_multicintas:
         self.string_analizar = None
         self.separador_strings = separador_strings
         self.caracter_final = caracter_final
+        self.ejercicio = ejercicio
 
     #UNE TODOS LOS STRINGS DE LOS INPUTS TENIENDO EN CUENTA EL POSIBLE SEPARADOR
     def __generar_string_unico(self, array_inputs):
         string_unico = ""+array_inputs[0]
+        if(self.ejercicio == "suma"):
+            self.caracter_final = self.caracter_final + array_inputs[0]
         array_inputs.pop(0)
         for i in range(len(array_inputs)):
             if(self.separador_strings != None):
