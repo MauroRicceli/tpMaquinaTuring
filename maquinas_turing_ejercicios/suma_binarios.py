@@ -85,7 +85,7 @@ class maquina_turing_ej1:
         if(self.multicinta[0][self.columna] == '+' and self.multicinta[1][self.columna] == 'B'):
             self.db_conex.update_mt(self.estado_actual, '+B', 'estado final', '+B','d',self.columna,str(self.multicinta))
             self.columna = self.columna + 1
-            self.db_conex.update_mt('Maquina apagada', '', '', '','','')
+            self.db_conex.update_mt('Maquina apagada', '', '', '','','', '')
             return
 
     #MARCA EL PRIMER DIGITO DEL RESULTADO PARA NO PISARLO
