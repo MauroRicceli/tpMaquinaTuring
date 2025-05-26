@@ -6,7 +6,7 @@ import numpy
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from generador_multicinta import generador_multicintas as generator
-from db_conn.postgres_connector import db
+from db_conn.connector import db_connector as db
 
 #REALIZAR SUMA DE UN NUMERO BINARIO Y X CANTIDAD DE 1'S BINARIOS
 
@@ -347,6 +347,7 @@ class maquina_turing_ej1:
         self.__cargar_programa()
         self.__ir_al_comienzo_string()
         self.__estado_q0()
+        self.db_conex.exportar_datos()
 
     def __ir_al_comienzo_string(self):
         for i in range(len(self.multicinta[0])-1):
