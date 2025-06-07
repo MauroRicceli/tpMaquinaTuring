@@ -20,7 +20,7 @@ class maquina_turing_ej1:
     def __init__(self):
         self.multicinta = self.__crear_multicinta()
         self.estados = []
-        self.alfabeto = "01+="
+        self.alfabeto = "01+=RFY"
         self.columna = 0
         self.estado_actual = 'q0'
         self.db_conex = db()
