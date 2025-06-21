@@ -1,0 +1,6 @@
+CREATE OR REPLACE FUNCTION finalizar_maquina()
+RETURNS VOID LANGUAGE plpgsql AS $$
+BEGIN
+    RAISE NOTICE 'fin ej2';
+END;
+$$;

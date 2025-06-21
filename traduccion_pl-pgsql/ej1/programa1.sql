@@ -4,7 +4,8 @@ DECLARE
     longitud INTEGER := LENGTH(input_string);
     caracter TEXT;
     i INTEGER;
-    resultado TEXT[][];
+    resultado1 TEXT[];
+    resultado2 TEXT[];
 BEGIN
     -- limpio el alfabeto y lo inserto para el programa 1 (IGUALDAD ENTRE 2 BINARIOS) 1 0 B X Y =
     DELETE FROM alfabeto;
@@ -18,6 +19,7 @@ BEGIN
 
     -- limpio la tabla programa y cargo los datos
     DELETE FROM programa;
+    DELETE FROM traza_ejecucion;
 
     INSERT INTO programa (estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento) VALUES
     ('q0', '1B', 'qDer', '1X', 'd'),
@@ -63,8 +65,8 @@ BEGIN
     END LOOP;
 
     -- CONSTRUYO LA MATRIZ CON EL SIMULADORMT Y LUEGO EJECUTO EL PROGRAMA CON ESA MATRIZ
-    resultado := simuladorMT(input_string);
-	PERFORM programa_ej1(resultado);
+    SELECT fila1, fila2 INTO resultado1, resultado2 FROM simuladorMT(input_string);
+	PERFORM programa_ej1(resultado1, resultado2);
 	RETURN 'fin';
 END;
 $$ LANGUAGE plpgsql;

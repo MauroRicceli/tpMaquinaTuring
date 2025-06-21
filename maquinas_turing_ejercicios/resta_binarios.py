@@ -20,7 +20,7 @@ class maquina_turing_ej2:
     def __init__(self):
         self.multicinta = self.__crear_multicinta()
         self.estados = []
-        self.alfabeto = "01-=XY"
+        self.alfabeto = "01-=XYR"
         self.columna = 1
         self.estado_actual = 'q0'
         self.cache_actual = ''
@@ -464,10 +464,6 @@ class maquina_turing_ej2:
             self.__estado_qDerResta()
             return
         
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'P'):
-            self.columna = self.columna + 1
-            self.__estado_qDerResta()
-            return
         
         if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna - 1
@@ -520,11 +516,6 @@ class maquina_turing_ej2:
             self.__estado_q11()
             return
         
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'P'):
-            self.columna = self.columna - 1
-            self.__estado_q11()
-            return
-        
         if(self.multicinta[0][self.columna] == '=' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna - 1
             self.__estado_qFinal()
@@ -539,11 +530,6 @@ class maquina_turing_ej2:
         print()
 
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
-            self.columna = self.columna - 1
-            self.__estado_qIzq()
-            return
-        
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'P'):
             self.columna = self.columna - 1
             self.__estado_qIzq()
             return
@@ -602,10 +588,6 @@ class maquina_turing_ej2:
             self.__estado_qrealizar_prestamo()
             return
         
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'P'):
-            self.columna = self.columna - 1
-            self.__estado_qPrestamo()
-            return
         
     def __estado_qrealizar_prestamo(self):
         self.estado_actual = 'qRealizarPrestamo'
@@ -636,10 +618,6 @@ class maquina_turing_ej2:
             self.__estado_qrealizar_prestamo()
             return
         
-        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'P'):
-            self.columna = self.columna + 1
-            self.__estado_qrealizar_prestamo()
-            return
 
         if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
             self.columna = self.columna - 1
