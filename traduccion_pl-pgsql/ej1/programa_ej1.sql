@@ -15,23 +15,33 @@ BEGIN
             IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 cache := '1';
                 fila2[columna] := 'X';
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '1B','qDer','1X','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 estado_actual := 'qDer';
                 CONTINUE;
             ELSIF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 cache := '0';
                 fila2[columna] := 'X';
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '0B','qDer','0X','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 estado_actual := 'qDer';
                 CONTINUE;
             ELSIF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '1X','q0','1X','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 CONTINUE;
             ELSIF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '0X','q0','0X','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 CONTINUE;
             ELSIF fila1[columna] = '=' AND fila2[columna] = 'B' THEN
                 cache := '=';
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '=B','q1','=B','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 estado_actual := 'q1';
                 CONTINUE;
@@ -41,18 +51,28 @@ BEGIN
 
         ELSIF estado_actual = 'qDer' THEN
             IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '0B','qDer','0B','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 CONTINUE;
             ELSIF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '1B','qDer','1B','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 CONTINUE;
             ELSIF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '0X','qDer','0X','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 CONTINUE;
             ELSIF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '1X','qDer','1X','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 CONTINUE;
             ELSIF fila1[columna] = '=' AND fila2[columna] = 'B' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '=B','q1','=B','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 estado_actual := 'q1';
                 CONTINUE;
@@ -64,35 +84,51 @@ BEGIN
             IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 fila2[columna] := 'Y';
                 IF cache = '0' THEN
+					INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+					(estado_actual, '0B','qIzq','0Y','i', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                     columna := columna - 1;
                     estado_actual := 'qIzq';
                     CONTINUE;
                 ELSE
+					INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+					(estado_actual, '0B','distintos','0Y','S', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                     PERFORM distintos();
                     EXIT;
                 END IF;
             ELSIF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 fila2[columna] := 'Y';
                 IF cache = '1' THEN
+					INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+					(estado_actual, '1B','qIzq','1Y','i', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                     columna := columna - 1;
                     estado_actual := 'qIzq';
                     CONTINUE;
                 ELSE
+					INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+					(estado_actual, '1B','distintos','1Y','S', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                     PERFORM distintos();
                     EXIT;
                 END IF;
             ELSIF fila1[columna] = '0' AND fila2[columna] = 'Y' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '0Y','q1','0Y','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 CONTINUE;
             ELSIF fila1[columna] = '1' AND fila2[columna] = 'Y' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '1Y','q1','1Y','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 CONTINUE;
             ELSIF fila1[columna] = 'B' AND fila2[columna] = 'B' THEN
                 fila2[columna] := 'Y';
                 IF cache = '=' THEN
+					INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+					(estado_actual, 'BB','iguales','BY','S', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                     PERFORM iguales();
                     EXIT;
                 ELSE
+					INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+					(estado_actual, 'BB','distintos','BY','S', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                     PERFORM distintos();
                     EXIT;
                 END IF;
@@ -102,27 +138,43 @@ BEGIN
 
         ELSIF estado_actual = 'qIzq' THEN
             IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '0B','qIzq','0B','i', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna - 1;
                 CONTINUE;
             ELSIF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '1B','qIzq','1B','i', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna - 1;
                 CONTINUE;
             ELSIF fila1[columna] = '0' AND fila2[columna] = 'Y' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '0Y','qIzq','0Y','i', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna - 1;
                 CONTINUE;
             ELSIF fila1[columna] = '1' AND fila2[columna] = 'Y' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '1Y','qIzq','1Y','i', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna - 1;
                 CONTINUE;
             ELSIF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '0X','qIzq','0X','i', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna - 1;
                 CONTINUE;
             ELSIF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '1X','qIzq','1X','i', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna - 1;
                 CONTINUE;
             ELSIF fila1[columna] = '=' AND fila2[columna] = 'B' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, '=B','qIzq','=B','i', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna - 1;
                 CONTINUE;
             ELSIF fila1[columna] = 'B' AND fila2[columna] = 'B' THEN
+				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
+				(estado_actual, 'BB','q0','BB','d', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                 columna := columna + 1;
                 estado_actual := 'q0';
                 CONTINUE;
