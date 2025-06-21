@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION programa_ej2(cinta1 TEXT[], cinta2 TEXT[])
+CREATE OR REPLACE FUNCTION programa_ej2(fila1 TEXT[], fila2 TEXT[])
 RETURNS VOID LANGUAGE plpgsql AS $$
 DECLARE
     columna INTEGER := 2;  -- arrays empiezan en 1 en plpgsql
@@ -7,15 +7,15 @@ DECLARE
 BEGIN
     LOOP
         RAISE NOTICE 'Estado: %, Columna: %', estado_actual, columna;
-		RAISE NOTICE 'Cache: %', cache;
-        RAISE NOTICE 'Fila 1: %', array_to_string(cinta1, '');
-        RAISE NOTICE 'Fila 2: %', array_to_string(cinta2, '');
-		
-		--PERFORM pg_sleep(3);
-		
+        RAISE NOTICE 'Cache: %', cache;
+        RAISE NOTICE 'Fila 1: %', array_to_string(fila1, '');
+        RAISE NOTICE 'Fila 2: %', array_to_string(fila2, '');
+
+        --PERFORM pg_sleep(3);
+
         IF estado_actual = 'q0' THEN
-            IF cinta2[columna] = 'B' AND cinta1[columna] = '0' THEN
-                cinta2[columna] := 'X';
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
+                fila2[columna] := 'X';
                 IF cache <> 'R' THEN
                     cache := '0';
                 END IF;
@@ -24,8 +24,8 @@ BEGIN
                 CONTINUE;
             END IF;
 
-            IF cinta2[columna] = 'B' AND cinta1[columna] = '1' THEN
-                cinta2[columna] := 'X';
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
+                fila2[columna] := 'X';
                 IF cache <> 'R' THEN
                     cache := '1';
                 END IF;
@@ -34,17 +34,17 @@ BEGIN
                 CONTINUE;
             END IF;
 
-            IF cinta2[columna] = 'X' AND cinta1[columna] = '0' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta2[columna] = 'X' AND cinta1[columna] = '1' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '-' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '-' AND fila2[columna] = 'B' THEN
                 IF cache <> 'R' THEN
                     columna := columna - 1;
                     estado_actual := 'restable';
@@ -56,36 +56,36 @@ BEGIN
             END IF;
 
         ELSIF estado_actual = 'qDer' THEN
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'X' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'X' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '-' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '-' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 estado_actual := 'q1';
                 CONTINUE;
             END IF;
 
         ELSIF estado_actual = 'q1' THEN
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 IF cache = '0' THEN
-                    cinta2[columna] := 'Y';
+                    fila2[columna] := 'Y';
                     columna := columna - 1;
                     cache := '';
                     estado_actual := 'qRetry';
@@ -100,7 +100,7 @@ BEGIN
                 END IF;
 
                 IF cache = 'R' THEN
-                    cinta2[columna] := 'Y';
+                    fila2[columna] := 'Y';
                     columna := columna - 1;
                     estado_actual := 'qRetry';
                     CONTINUE;
@@ -113,14 +113,14 @@ BEGIN
                 END IF;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'Y' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'Y' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 IF cache = '0' THEN
-                    cinta2[columna] := 'Y';
+                    fila2[columna] := 'Y';
                     columna := columna - 1;
                     cache := 'R';
                     estado_actual := 'qRetry';
@@ -128,7 +128,7 @@ BEGIN
                 END IF;
 
                 IF cache = '1' THEN
-                    cinta2[columna] := 'Y';
+                    fila2[columna] := 'Y';
                     columna := columna - 1;
                     cache := '';
                     estado_actual := 'qRetry';
@@ -136,7 +136,7 @@ BEGIN
                 END IF;
 
                 IF cache = 'R' THEN
-                    cinta2[columna] := 'Y';
+                    fila2[columna] := 'Y';
                     columna := columna - 1;
                     estado_actual := 'qRetry';
                     CONTINUE;
@@ -149,12 +149,12 @@ BEGIN
                 END IF;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'Y' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'Y' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '=' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '=' AND fila2[columna] = 'B' THEN
                 IF cache <> '-' THEN
                     columna := columna - 1;
                     estado_actual := 'restable';
@@ -170,357 +170,357 @@ BEGIN
             EXIT;
 
         ELSIF estado_actual = 'qRetry' THEN
-            IF cinta2[columna] = 'B' AND (cinta1[columna] = '0' OR cinta1[columna] = '1') THEN
+            IF fila2[columna] = 'B' AND (fila1[columna] = '0' OR fila1[columna] = '1') THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta2[columna] = 'Y' AND (cinta1[columna] = '0' OR cinta1[columna] = '1') THEN
+            IF fila2[columna] = 'Y' AND (fila1[columna] = '0' OR fila1[columna] = '1') THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta2[columna] = 'X' AND (cinta1[columna] = '0' OR cinta1[columna] = '1') THEN
+            IF fila2[columna] = 'X' AND (fila1[columna] = '0' OR fila1[columna] = '1') THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '-' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '-' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = 'B' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = 'B' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 estado_actual := 'q0';
                 CONTINUE;
             END IF;
 
         ELSIF estado_actual = 'restable' THEN
-            IF (cinta1[columna] = '0') AND (cinta2[columna] = 'B') THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF (cinta1[columna] = '0') AND (cinta2[columna] = 'Y') THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'Y' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF (cinta1[columna] = '0') AND (cinta2[columna] = 'X') THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF (cinta1[columna] = '1') AND (cinta2[columna] = 'B') THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF (cinta1[columna] = '1') AND (cinta2[columna] = 'Y') THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'Y' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF (cinta1[columna] = '1') AND (cinta2[columna] = 'X') THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '-' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '-' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '=' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '=' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 estado_actual := 'reiniciar_marcado';
                 CONTINUE;
             END IF;
 
         ELSIF estado_actual = 'reiniciar_marcado' THEN
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'Y' THEN
-                cinta2[columna] := 'B';
+            IF fila1[columna] = '0' AND fila2[columna] = 'Y' THEN
+                fila2[columna] := 'B';
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'Y' THEN
-                cinta2[columna] := 'B';
+            IF fila1[columna] = '1' AND fila2[columna] = 'Y' THEN
+                fila2[columna] := 'B';
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'X' THEN
-                cinta2[columna] := 'B';
+            IF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
+                fila2[columna] := 'B';
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'X' THEN
-                cinta2[columna] := 'B';
+            IF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
+                fila2[columna] := 'B';
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '-' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '-' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = 'B' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = 'B' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 estado_actual := 'iniciarResta';
                 CONTINUE;
             END IF;
 
         ELSIF estado_actual = 'iniciarResta' THEN
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'Y' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'Y' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'Y' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'Y' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '-' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '-' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '=' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '=' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 estado_actual := 'q10';
                 CONTINUE;
             END IF;
 
         ELSIF estado_actual = 'q10' THEN
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'B' THEN
-                cinta2[columna] := 'Y';
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
+                fila2[columna] := 'Y';
                 cache := '0';
                 columna := columna - 1;
                 estado_actual := 'qDerResta';
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'B' THEN
-                cinta2[columna] := 'Y';
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
+                fila2[columna] := 'Y';
                 cache := '1';
                 columna := columna - 1;
                 estado_actual := 'qDerResta';
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'Y' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'Y' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'Y' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'Y' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '-' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '-' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 estado_actual := 'qFinal';
                 CONTINUE;
             END IF;
 
         ELSIF estado_actual = 'qDerResta' THEN
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'Y' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'Y' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'Y' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'Y' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'X' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'X' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '-' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '-' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '=' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '=' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = 'B' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = 'B' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 estado_actual := 'q11';
                 CONTINUE;
             END IF;
 
         ELSIF estado_actual = 'q11' THEN
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 IF cache = '0' THEN
-                    cinta2[columna] := 'X';
+                    fila2[columna] := 'X';
                     columna := columna - 1;
                     estado_actual := 'qIzq';
                     CONTINUE;
                 END IF;
 
                 IF cache = '1' THEN
-                    cinta1[columna] := '0';
-                    cinta2[columna] := 'X';
+                    fila1[columna] := '0';
+                    fila2[columna] := 'X';
                     columna := columna - 1;
                     estado_actual := 'qIzq';
                     CONTINUE;
                 END IF;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 IF cache = '0' THEN
-                    cinta2[columna] := 'X';
+                    fila2[columna] := 'X';
                     columna := columna - 1;
                     estado_actual := 'qIzq';
                     CONTINUE;
                 END IF;
 
                 IF cache = '1' THEN
-                    cinta1[columna] := '1';
-                    cinta2[columna] := 'X';
+                    fila1[columna] := '1';
+                    fila2[columna] := 'X';
                     columna := columna - 1;
                     estado_actual := 'qPrestamo';
                     CONTINUE;
                 END IF;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'X' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'X' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '=' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '=' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 estado_actual := 'qFinal';
                 CONTINUE;
             END IF;
 
         ELSIF estado_actual = 'qIzq' THEN
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'Y' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'Y' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'Y' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'Y' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'X' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'X' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-			IF cinta1[columna] = '=' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '=' AND fila2[columna] = 'B' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '-' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '-' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
                 estado_actual := 'iniciarResta';
                 CONTINUE;
             END IF;
 
         ELSIF estado_actual = 'qPrestamo' THEN
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'B' THEN
-                cinta1[columna] := '0';
+            IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
+                fila1[columna] := '0';
                 columna := columna - 1;
                 estado_actual := 'qIzq';
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'B' THEN
-                cinta1[columna] := '1';
+            IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
+                fila1[columna] := '1';
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '1' AND cinta2[columna] = 'X' THEN
+            IF fila1[columna] = '1' AND fila2[columna] = 'X' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '0' AND cinta2[columna] = 'X' THEN
+            IF fila1[columna] = '0' AND fila2[columna] = 'X' THEN
                 columna := columna - 1;
                 CONTINUE;
             END IF;
 
-            IF cinta1[columna] = '-' AND cinta2[columna] = 'B' THEN
+            IF fila1[columna] = '=' AND fila2[columna] = 'B' THEN
                 columna := columna + 1;
-                estado_actual := 'qFinal';
+                estado_actual := 'q10';
                 CONTINUE;
             END IF;
 
         ELSIF estado_actual = 'qFinal' THEN
-            PERFORM finalizar_maquina();
+            RAISE NOTICE 'Fin de la ejecución';
             EXIT;
         END IF;
     END LOOP;
