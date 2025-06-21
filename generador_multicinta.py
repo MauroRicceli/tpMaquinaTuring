@@ -21,7 +21,7 @@ class generador_multicintas:
     #UNE TODOS LOS STRINGS DE LOS INPUTS TENIENDO EN CUENTA EL POSIBLE SEPARADOR
     def __generar_string_unico(self, array_inputs):
         string_unico = ""+array_inputs[0]
-        if(self.ejercicio == "suma"):
+        if(self.ejercicio == "suma" or self.ejercicio == "resta"):
             self.caracter_final = self.caracter_final + array_inputs[0]
         array_inputs.pop(0)
         for i in range(len(array_inputs)):

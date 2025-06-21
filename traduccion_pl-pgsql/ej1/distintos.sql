@@ -1,4 +1,4 @@
--- Las funciones distintas() y qIguales() igual que antes
+-- se sabe que el numero es distinto al otro, se sale
 CREATE OR REPLACE FUNCTION distintos()
 RETURNS VOID LANGUAGE plpgsql AS $$
 BEGIN
