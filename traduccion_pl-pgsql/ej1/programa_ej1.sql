@@ -11,6 +11,10 @@ BEGIN
         RAISE NOTICE 'Fila 1: %', array_to_string(fila1, '');
         RAISE NOTICE 'Fila 2: %', array_to_string(fila2, '');
 
+
+		--BUSCA EL PRIMER NUMERO POSIBLE QUE NO ESTE MARCADO CON X DEL NUMERO A LA IZQUIERDA DEL IGUAL.
+   		--SI ENCUENTRA ALGUNO VALIDO LO MARCA CON X, LO GUARDA EN CACHE PARA SU USO POSTERIOR Y CAMBIA DE ESTADO
+    	--SI LLEGA AL IGUAL VERIFICA QUE EL CARACTER DEL OTRO NUMERO SEA EL BLANCO, SI NO LO ES, SON DE DISTINTA LONGITUD, por lo tanto distintos
         IF estado_actual = 'q0' THEN
             IF fila1[columna] = '1' AND fila2[columna] = 'B' THEN
                 cache := '1';
@@ -49,6 +53,7 @@ BEGIN
                 EXIT;
             END IF;
 
+		--SE MUEVE A LA DERECHA HASTA ENCONTRAR EL IGUAL, LA IDEA ES LLEGAR AL SEGUNDO NUMERO PARA HACER LA COMPARATIVA
         ELSIF estado_actual = 'qDer' THEN
             IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
 				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
@@ -80,6 +85,9 @@ BEGIN
                 EXIT;
             END IF;
 
+		--CON EL VALOR GUARDADO EN CACHE EN Q0, SE VERIFICA QUE EL PRIMER NUMERO NO MARCADO ENCONTRADO TENGA EL MISMO VALOR
+    	--SI NO LO TIENE, NO ES IGUAL, Y SE TERMINA SIN ESTADO VALIDO
+    	--SI ES IGUAL SE CONTINUA.
         ELSIF estado_actual = 'q1' THEN
             IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
                 fila2[columna] := 'Y';
@@ -136,6 +144,7 @@ BEGIN
                 EXIT;
             END IF;
 
+		--TE MOVES A LA IZQUIERDA PARA LLEGAR HASTA EL BB DE LA IZQUIERDA Y VOLVER A CALCULAR Q0 CON EL PROXIMO VALOR SIN MARCAR
         ELSIF estado_actual = 'qIzq' THEN
             IF fila1[columna] = '0' AND fila2[columna] = 'B' THEN
 				INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES

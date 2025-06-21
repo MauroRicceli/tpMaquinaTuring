@@ -124,6 +124,7 @@ class maquina_turing_ej2:
                 self.__estado_qRetry()
                 return
             if(self.cache_actual == '1'):
+                self.multicinta[1][self.columna] = 'Y'
                 self.columna = self.columna - 1
                 self.cache_actual = 'R'     
                 self.__estado_qRetry()
@@ -521,6 +522,7 @@ class maquina_turing_ej2:
             self.__estado_qFinal()
             return
 
+    #LLEGA HASTA EL PRINCIPIO DEL SEGUNDO NUMERO (EL QUE ESTA LUEGO DEL -), Y LLAMA A INICIAR RESTA.
     def __estado_qIzq(self):
         self.estado_actual = 'qIzq'
 
@@ -569,6 +571,7 @@ class maquina_turing_ej2:
             self.__estado_qIzq()
             return
     
+    #MARCA TODOS LOS 0 QUE ENCUENTRA EN EL CAMINO DEL PRESTAMO, CUANDO ENCUENTRA UN 1 PARA PRESTAR, LO PONE EN 0 Y LLAMA A REALIZAR PRESTAMO
     def __estado_qPrestamo(self):
         self.estado_actual = 'qPrestamo'
         print(self.multicinta)
