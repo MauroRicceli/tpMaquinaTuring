@@ -337,12 +337,324 @@ class maquina_turing_ej2:
         print(self.estado_actual)
         print()
     
+    #ESTADO INICIAR RESTA, SE LLAMA LUEGO DE LA COMPROBACION Y SE MUEVE HASTA EL PRIMER NUMERO (DESDE LA DERECHA) A RESTAR.
+    #CUANDO LLEGA AL = SIGNIFICA QUE YA PUEDO VER EL NUMERO QUE RESTA, POR LO TANTO PASO A Q10
     def __estado_iniciarResta(self):
         self.estado_actual = 'iniciarResta'
         print(self.multicinta)
         print(self.columna)
         print(self.estado_actual)
         print()
+
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_iniciarResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_iniciarResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'Y'):
+            self.columna = self.columna + 1
+            self.__estado_iniciarResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Y'):
+            self.columna = self.columna + 1
+            self.__estado_iniciarResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '-' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_iniciarResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '=' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna - 1
+            self.__estado_q10()
+            return
+
+    #BUSCO DE DERECHA A IZQUIERDA LOS NUMEROS DEL NUMERO QUE ESTA RESTANDO. SI ENCUENTRO UN 0 SIN MARCAR LO MARCO Y SIGO BUSCANDO UN 1 YA QUE NO ME AFECTA EN LA RESTA.
+    #SI ENCUENTRO UN 1 SIN MARCAR, LO MARCO Y LLAMO A QDER RESTA, QUE SE ENCARGA DE IR HASTA EL FINAL DEL STRING.
+    def __estado_q10(self):
+        self.estado_actual = 'q10'
+
+        print(self.multicinta)
+        print(self.columna)
+        print(self.estado_actual)
+        print()
+
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
+            self.multicinta[1][self.columna] = 'Y'
+            self.cache_actual = '0'
+            self.columna = self.columna - 1
+            self.__estado_qDerResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
+            self.multicinta[1][self.columna] = 'Y'
+            self.cache_actual = '1'
+            self.columna = self.columna - 1
+            self.__estado_qDerResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'Y'):
+            self.columna = self.columna - 1
+            self.__estado_q10()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Y'):
+            self.columna = self.columna - 1
+            self.__estado_q10()
+            return
+        
+        if(self.multicinta[0][self.columna] == '-' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna - 1
+            self.__estado_qFinal()
+            return
+
+    #SE MUEVE HASTA EL FINAL DEL STRING.
+    def __estado_qDerResta(self):
+        self.estado_actual = 'qDerResta'
+
+        print(self.multicinta)
+        print(self.columna)
+        print(self.estado_actual)
+        print()
+
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_qDerResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_qDerResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'Y'):
+            self.columna = self.columna + 1
+            self.__estado_qDerResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Y'):
+            self.columna = self.columna + 1
+            self.__estado_qDerResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'X'):
+            self.columna = self.columna + 1
+            self.__estado_qDerResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'X'):
+            self.columna = self.columna + 1
+            self.__estado_qDerResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '-' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_qDerResta()
+            return
+
+        if(self.multicinta[0][self.columna] == '=' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_qDerResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'P'):
+            self.columna = self.columna + 1
+            self.__estado_qDerResta()
+            return
+        
+        if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna - 1
+            self.__estado_q11()
+            return
+
+    #HACE LA RESTA EN ORDEN DE DERECHA A IZQUIERDA.
+    def __estado_q11(self):
+        self.estado_actual = 'q11'
+
+        print(self.multicinta)
+        print(self.columna)
+        print(self.estado_actual)
+        print(self.cache_actual)
+        print()
+
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
+            if(self.cache_actual == '0'):
+                self.multicinta[1][self.columna] = 'X'
+                self.columna = self.columna - 1
+                self.__estado_qIzq()
+                return
+            if(self.cache_actual == '1'):
+                self.multicinta[0][self.columna] = '0'
+                self.multicinta[1][self.columna] = 'X'
+                self.columna = self.columna - 1
+                self.__estado_qIzq()
+                return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
+            if(self.cache_actual == '0'):
+                self.multicinta[1][self.columna] = 'X'
+                self.columna = self.columna - 1
+                self.__estado_qIzq()
+                return
+            if(self.cache_actual == '1'):
+                self.multicinta[0][self.columna] = '1'
+                self.multicinta[1][self.columna] = 'X'
+                self.columna = self.columna - 1
+                self.__estado_qPrestamo()
+                return
+
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'X'):
+            self.columna = self.columna - 1
+            self.__estado_q11()
+            return
+
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'X'):
+            self.columna = self.columna - 1
+            self.__estado_q11()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'P'):
+            self.columna = self.columna - 1
+            self.__estado_q11()
+            return
+        
+        if(self.multicinta[0][self.columna] == '=' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna - 1
+            self.__estado_qFinal()
+            return
+
+    def __estado_qIzq(self):
+        self.estado_actual = 'qIzq'
+
+        print(self.multicinta)
+        print(self.columna)
+        print(self.estado_actual)
+        print()
+
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna - 1
+            self.__estado_qIzq()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'P'):
+            self.columna = self.columna - 1
+            self.__estado_qIzq()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna - 1
+            self.__estado_qIzq()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'Y'):
+            self.columna = self.columna - 1
+            self.__estado_qIzq()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'Y'):
+            self.columna = self.columna - 1
+            self.__estado_qIzq()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'X'):
+            self.columna = self.columna - 1
+            self.__estado_qIzq()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'X'):
+            self.columna = self.columna - 1
+            self.__estado_qIzq()
+            return
+        
+        if(self.multicinta[0][self.columna] == '-' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna - 1
+            self.__estado_iniciarResta()
+            return
+
+        if(self.multicinta[0][self.columna] == '=' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna - 1
+            self.__estado_qIzq()
+            return
+    
+    def __estado_qPrestamo(self):
+        self.estado_actual = 'qPrestamo'
+        print(self.multicinta)
+        print(self.columna)
+        print(self.estado_actual)
+        print()
+
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
+            self.multicinta[1][self.columna] = 'R'
+            self.columna = self.columna - 1
+            self.__estado_qPrestamo()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
+            self.multicinta[0][self.columna] = '0'
+            self.columna = self.columna + 1
+            self.__estado_qrealizar_prestamo()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'P'):
+            self.columna = self.columna - 1
+            self.__estado_qPrestamo()
+            return
+        
+    def __estado_qrealizar_prestamo(self):
+        self.estado_actual = 'qRealizarPrestamo'
+        print(self.multicinta)
+        print(self.columna)
+        print(self.estado_actual)
+        print()
+
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'R'):
+            self.multicinta[0][self.columna] = '1'
+            self.multicinta[1][self.columna] = 'B'
+            self.columna = self.columna + 1
+            self.__estado_qrealizar_prestamo()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna + 1
+            self.__estado_qrealizar_prestamo()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'X'):
+            self.columna = self.columna + 1
+            self.__estado_qrealizar_prestamo()
+            return
+        
+        if(self.multicinta[0][self.columna] == '1' and self.multicinta[1][self.columna] == 'X'):
+            self.columna = self.columna + 1
+            self.__estado_qrealizar_prestamo()
+            return
+        
+        if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'P'):
+            self.columna = self.columna + 1
+            self.__estado_qrealizar_prestamo()
+            return
+
+        if(self.multicinta[0][self.columna] == 'B' and self.multicinta[1][self.columna] == 'B'):
+            self.columna = self.columna - 1
+            self.__estado_qIzq()
+            return
+
+    def __estado_qFinal(self):
+        self.estado_actual = 'qFinal'
+
+        print(self.multicinta)
+        print(self.columna)
+        print(self.estado_actual)
+        print()
+
+        print("fin")
 
     def iniciar_maquina(self):
         self.__estado_q0()
