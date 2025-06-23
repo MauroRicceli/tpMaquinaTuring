@@ -7,6 +7,7 @@ DECLARE
     resultado1 TEXT[];
     resultado2 TEXT[];
 BEGIN
+	--RECIBE STRING CON NUMERO INICIAL IGUAL AL QUE ESTA AL FINAL DEL IGUAL PARA HACER LA RESTA, EJEMPLO: 100-11=100 ES VALIDO COMO INPUT.
     -- limpio el alfabeto y lo inserto para el programa 1 (IGUALDAD ENTRE 2 BINARIOS) 1 0 B X Y =
     DELETE FROM alfabeto;
     INSERT INTO alfabeto (alfabeto) VALUES
