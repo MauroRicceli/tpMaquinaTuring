@@ -124,7 +124,7 @@ BEGIN
                     INSERT INTO traza_ejecucion(estado_origen, caracter_origen, estado_nuevo, caracter_nuevo, desplazamiento, columna_actual, estado_string) VALUES
 				    (estado_actual, '0B','qRetry','0B','i', columna, array_to_string(fila1, '') || E'\n' || array_to_string(fila2, ''));
                     columna := columna - 1;
-                    cache := 'R';
+                    cache := '';
                     estado_actual := 'qRetry';
                     CONTINUE;
                 END IF;

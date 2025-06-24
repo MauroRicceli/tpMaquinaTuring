@@ -24,7 +24,6 @@ class maquina_turing_ej2:
         self.columna = 1
         self.estado_actual = 'q0'
         self.cache_actual = ''
-        self.db_conex = db()
 
     #TOMA EL PRIMER CARACTER DEL PRIMER NUMERO Y LO MARCA, PASA A QDER
     def __estado_q0(self):
@@ -33,6 +32,7 @@ class maquina_turing_ej2:
         print(self.multicinta)
         print(self.columna)
         print(self.estado_actual)
+        print(self.cache_actual)
         print()
 
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
@@ -77,6 +77,7 @@ class maquina_turing_ej2:
         print(self.multicinta)
         print(self.columna)
         print(self.estado_actual)
+        print(self.cache_actual)
         print()
 
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
@@ -114,6 +115,7 @@ class maquina_turing_ej2:
         print(self.multicinta)
         print(self.columna)
         print(self.estado_actual)
+        print(self.cache_actual)
         print()
         
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
@@ -126,7 +128,7 @@ class maquina_turing_ej2:
             if(self.cache_actual == '1'):
                 self.multicinta[1][self.columna] = 'Y'
                 self.columna = self.columna - 1
-                self.cache_actual = 'R'     
+                self.cache_actual = ''     
                 self.__estado_qRetry()
                 return
             if(self.cache_actual == 'R'):
@@ -187,6 +189,7 @@ class maquina_turing_ej2:
         print(self.multicinta)
         print(self.columna)
         print(self.estado_actual)
+        print(self.cache_actual)
         print()
 
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
@@ -236,6 +239,7 @@ class maquina_turing_ej2:
         print(self.multicinta)
         print(self.columna)
         print(self.estado_actual)
+        print(self.cache_actual)
         print()
 
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
@@ -285,6 +289,7 @@ class maquina_turing_ej2:
         print(self.multicinta)
         print(self.columna)
         print(self.estado_actual)
+        print(self.cache_actual)
         print()
 
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
@@ -345,6 +350,7 @@ class maquina_turing_ej2:
         print(self.multicinta)
         print(self.columna)
         print(self.estado_actual)
+
         print()
 
         if(self.multicinta[0][self.columna] == '0' and self.multicinta[1][self.columna] == 'B'):
